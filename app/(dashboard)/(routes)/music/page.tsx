@@ -1,4 +1,4 @@
-'use client'
+"use client"
 
 import Empty from '@/components/empty'
 import Loader from '@/components/loader'
@@ -11,8 +11,6 @@ import { Music } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-// import { IFormSchema, formSchema } from './constants'
-// import { userProModal } from '@/hook/user-pro-modal'
 import { toast } from 'react-hot-toast'
 import { formSchema } from './constants'
 import { Heading } from '@/components/heading'
@@ -46,6 +44,17 @@ const MusicPage = () => {
       }
     } finally {
       router.refresh()
+    }
+  }
+
+  const handleDownload = () => {
+    if (music) {
+      const a = document.createElement('a')
+      a.href = music
+      a.download = 'generated_music.mp3'
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
     }
   }
 
@@ -103,9 +112,14 @@ const MusicPage = () => {
           {!music && !isLoading && <Empty label="No music generated." />}
 
           {music && (
-            <audio controls className="w-full mt-8">
-              <source src={music} />
-            </audio>
+            <div>
+              <audio controls className="w-full mt-8">
+                <source src={music} />
+              </audio>
+              <Button className="mt-4" onClick={handleDownload}>
+                Download Music
+              </Button>
+            </div>
           )}
         </div>
       </div>
